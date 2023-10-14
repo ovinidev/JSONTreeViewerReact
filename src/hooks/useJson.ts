@@ -1,4 +1,5 @@
 "use client";
+import { bytesToSize } from "@utils/formatBytes";
 import { formatJson } from "@utils/formatJson";
 import { parseJsonFile } from "@utils/parseJsonFile";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -28,8 +29,12 @@ export function useJson() {
     try {
       const jsonBrute = await parseJsonFile(e.target.files[0]);
       const json = formatJson(jsonBrute);
+
       setCompleteJson(json);
-      jsonName.current.value = e.target.files[0].name;
+
+      const jsonSize = bytesToSize(e.target.files[0].size);
+
+      jsonName.current.value = `${e.target.files[0].name} - ${jsonSize}`;
     } catch {
       setJsonIsError(true);
     }
